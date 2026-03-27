@@ -58,9 +58,7 @@ class _LetterCardState extends State<LetterCard>
       if (mounted) setState(() => _isPlaying = false);
     });
     _player.onPlayerStateChanged.listen((state) {
-      if (mounted) {
-        setState(() => _isPlaying = state == PlayerState.playing);
-      }
+      if (mounted) setState(() => _isPlaying = state == PlayerState.playing);
     });
   }
 
@@ -78,7 +76,7 @@ class _LetterCardState extends State<LetterCard>
         return;
       }
       await _player.stop();
-      await _player.play(UrlSource(widget.letter.audioUrl));
+      await _player.play(AssetSource(widget.letter.audioAsset));
     } catch (e) {
       if (mounted) {
         ScaffoldMessenger.of(context).showSnackBar(
@@ -104,6 +102,10 @@ class _LetterCardState extends State<LetterCard>
 
   @override
   Widget build(BuildContext context) {
+    final screenHeight = MediaQuery.of(context).size.height;
+    final imageHeight = screenHeight * 0.38;
+    final letterSpacing = screenHeight * 0.04;
+
     return Card(
       elevation: 8,
       shadowColor: Colors.black26,
@@ -111,10 +113,11 @@ class _LetterCardState extends State<LetterCard>
       color: _cardColor,
       child: SingleChildScrollView(
         child: Padding(
-          padding: const EdgeInsets.symmetric(vertical: 20, horizontal: 20),
+          padding: const EdgeInsets.symmetric(vertical: 16, horizontal: 20),
           child: Column(
-            mainAxisAlignment: MainAxisAlignment.center,
+            mainAxisAlignment: MainAxisAlignment.start,
             children: [
+
               // Learned badge
               Align(
                 alignment: Alignment.topRight,
@@ -122,7 +125,8 @@ class _LetterCardState extends State<LetterCard>
                   onTap: widget.onToggleLearned,
                   child: AnimatedContainer(
                     duration: const Duration(milliseconds: 200),
-                    padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 6),
+                    padding: const EdgeInsets.symmetric(
+                        horizontal: 12, vertical: 6),
                     decoration: BoxDecoration(
                       color: widget.isLearned
                           ? Colors.green.shade400
@@ -137,7 +141,9 @@ class _LetterCardState extends State<LetterCard>
                               ? Icons.check_circle
                               : Icons.radio_button_unchecked,
                           size: 16,
-                          color: widget.isLearned ? Colors.white : Colors.grey,
+                          color: widget.isLearned
+                              ? Colors.white
+                              : Colors.grey,
                         ),
                         const SizedBox(width: 4),
                         Text(
@@ -158,28 +164,28 @@ class _LetterCardState extends State<LetterCard>
                 ),
               ),
 
-              const SizedBox(height: 10),
+              const SizedBox(height: 12),
 
-              // Image with emoji fallback
+              // Large image (3x original size)
               ClipRRect(
-                borderRadius: BorderRadius.circular(16),
+                borderRadius: BorderRadius.circular(20),
                 child: Image.network(
                   widget.letter.imageUrl,
-                  height: 140,
+                  height: imageHeight,
                   width: double.infinity,
                   fit: BoxFit.cover,
                   errorBuilder: (context, error, stack) {
                     return Container(
-                      height: 140,
+                      height: imageHeight,
                       width: double.infinity,
                       decoration: BoxDecoration(
                         color: Colors.indigo.shade50,
-                        borderRadius: BorderRadius.circular(16),
+                        borderRadius: BorderRadius.circular(20),
                       ),
                       child: Center(
                         child: Text(
                           widget.letter.emoji,
-                          style: const TextStyle(fontSize: 72),
+                          style: TextStyle(fontSize: imageHeight * 0.4),
                         ),
                       ),
                     );
@@ -187,35 +193,34 @@ class _LetterCardState extends State<LetterCard>
                   loadingBuilder: (context, child, progress) {
                     if (progress == null) return child;
                     return Container(
-                      height: 140,
+                      height: imageHeight,
                       width: double.infinity,
                       decoration: BoxDecoration(
                         color: Colors.indigo.shade50,
-                        borderRadius: BorderRadius.circular(16),
+                        borderRadius: BorderRadius.circular(20),
                       ),
-                      child: const Center(
-                        child: CircularProgressIndicator(),
-                      ),
+                      child: const Center(child: CircularProgressIndicator()),
                     );
                   },
                 ),
               ),
 
-              const SizedBox(height: 8),
+              const SizedBox(height: 10),
 
               // Word label
               Text(
                 '${widget.letter.wordHr} / ${widget.letter.wordEn}',
                 style: GoogleFonts.poppins(
-                  fontSize: 15,
+                  fontSize: 16,
                   fontWeight: FontWeight.w600,
                   color: Colors.indigo.shade700,
                 ),
               ),
 
-              const SizedBox(height: 4),
+              // Spacer pushing letter down ~20% of screen
+              SizedBox(height: letterSpacing),
 
-              // LARGE uppercase letter (doubled)
+              // Large uppercase letter
               Text(
                 widget.letter.upper,
                 style: GoogleFonts.poppins(
@@ -226,7 +231,7 @@ class _LetterCardState extends State<LetterCard>
                 ),
               ),
 
-              // Lowercase letter (doubled)
+              // Lowercase letter
               Text(
                 widget.letter.lower,
                 style: GoogleFonts.poppins(
@@ -237,9 +242,9 @@ class _LetterCardState extends State<LetterCard>
                 ),
               ),
 
-              const SizedBox(height: 12),
+              const SizedBox(height: 16),
 
-              // IPA reveal
+              // IPA reveal (animated)
               AnimatedBuilder(
                 animation: _ipaAnimation,
                 builder: (context, child) {
@@ -268,7 +273,7 @@ class _LetterCardState extends State<LetterCard>
                 },
               ),
 
-              const SizedBox(height: 12),
+              const SizedBox(height: 16),
 
               // Action buttons
               Row(
@@ -278,7 +283,9 @@ class _LetterCardState extends State<LetterCard>
                     icon: _isPlaying
                         ? Icons.stop_rounded
                         : Icons.volume_up_rounded,
-                    label: _isPlaying ? 'Stani / Stop' : 'Slušaj / Listen',
+                    label: _isPlaying
+                        ? 'Stani / Stop'
+                        : 'Slušaj / Listen',
                     color: Colors.indigo.shade400,
                     onTap: _playAudio,
                   ),
@@ -287,14 +294,16 @@ class _LetterCardState extends State<LetterCard>
                     icon: _ipaVisible
                         ? Icons.visibility_off_rounded
                         : Icons.visibility_rounded,
-                    label: _ipaVisible ? 'Sakrij / Hide' : 'Pokaži / Show',
+                    label: _ipaVisible
+                        ? 'Sakrij / Hide'
+                        : 'Pokaži / Show',
                     color: Colors.purple.shade400,
                     onTap: _toggleIpa,
                   ),
                 ],
               ),
 
-              const SizedBox(height: 8),
+              const SizedBox(height: 16),
             ],
           ),
         ),
@@ -321,7 +330,8 @@ class _ActionButton extends StatelessWidget {
     return GestureDetector(
       onTap: onTap,
       child: Container(
-        padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 10),
+        padding:
+            const EdgeInsets.symmetric(horizontal: 16, vertical: 12),
         decoration: BoxDecoration(
           color: color,
           borderRadius: BorderRadius.circular(16),
@@ -336,14 +346,14 @@ class _ActionButton extends StatelessWidget {
         child: Row(
           mainAxisSize: MainAxisSize.min,
           children: [
-            Icon(icon, color: Colors.white, size: 18),
-            const SizedBox(width: 6),
+            Icon(icon, color: Colors.white, size: 20),
+            const SizedBox(width: 8),
             Text(
               label,
               style: GoogleFonts.poppins(
                 color: Colors.white,
                 fontWeight: FontWeight.w600,
-                fontSize: 12,
+                fontSize: 13,
               ),
             ),
           ],
