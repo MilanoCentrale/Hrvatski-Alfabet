@@ -175,20 +175,3 @@ class _GridScreenState extends State<GridScreen> {
     );
   }
 }
-```
-
-Click **Commit changes**.
-
----
-
-## Fix 6 — Add ProGuard rules to fix audio in release mode
-
-1. Click **Add file → Create new file**
-2. Filename: `android/app/proguard-rules.pro`
-3. Paste:
-```
--keep class xyz.luan.audioplayers.** { *; }
--keep class xyz.luan.audioplayers.player.** { *; }
--keep class io.flutter.** { *; }
--keep class io.flutter.plugins.** { *; }
--dontwarn xyz.luan.audioplayers.**
