@@ -28,6 +28,41 @@ jobs:
           flutter-version: '3.22.0'
           channel: 'stable'
 
+      - name: Download Croatian alphabet audio files
+        run: |
+          mkdir -p assets/audio
+          curl -L -o assets/audio/a.ogg    "https://upload.wikimedia.org/wikipedia/commons/2/21/Hr-A.ogg"
+          curl -L -o assets/audio/b.ogg    "https://upload.wikimedia.org/wikipedia/commons/5/5e/Hr-B.ogg"
+          curl -L -o assets/audio/c.ogg    "https://upload.wikimedia.org/wikipedia/commons/6/61/Hr-C.ogg"
+          curl -L -o assets/audio/ch.ogg   "https://upload.wikimedia.org/wikipedia/commons/d/d0/Hr-%C4%8C.ogg"
+          curl -L -o assets/audio/cy.ogg   "https://upload.wikimedia.org/wikipedia/commons/3/38/Hr-%C4%86.ogg"
+          curl -L -o assets/audio/d.ogg    "https://upload.wikimedia.org/wikipedia/commons/4/44/Hr-D.ogg"
+          curl -L -o assets/audio/dz.ogg   "https://upload.wikimedia.org/wikipedia/commons/5/5f/Hr-D%C5%BE.ogg"
+          curl -L -o assets/audio/dj.ogg   "https://upload.wikimedia.org/wikipedia/commons/2/24/Hr-%C4%90.ogg"
+          curl -L -o assets/audio/e.ogg    "https://upload.wikimedia.org/wikipedia/commons/9/9f/Hr-E.ogg"
+          curl -L -o assets/audio/f.ogg    "https://upload.wikimedia.org/wikipedia/commons/7/70/Hr-F.ogg"
+          curl -L -o assets/audio/g.ogg    "https://upload.wikimedia.org/wikipedia/commons/5/5c/Hr-G.ogg"
+          curl -L -o assets/audio/h.ogg    "https://upload.wikimedia.org/wikipedia/commons/f/fc/Hr-H.ogg"
+          curl -L -o assets/audio/i.ogg    "https://upload.wikimedia.org/wikipedia/commons/b/b9/Hr-I.ogg"
+          curl -L -o assets/audio/j.ogg    "https://upload.wikimedia.org/wikipedia/commons/e/e6/Hr-J.ogg"
+          curl -L -o assets/audio/k.ogg    "https://upload.wikimedia.org/wikipedia/commons/5/58/Hr-K.ogg"
+          curl -L -o assets/audio/l.ogg    "https://upload.wikimedia.org/wikipedia/commons/5/50/Hr-L.ogg"
+          curl -L -o assets/audio/lj.ogg   "https://upload.wikimedia.org/wikipedia/commons/0/03/Hr-LJ.ogg"
+          curl -L -o assets/audio/m.ogg    "https://upload.wikimedia.org/wikipedia/commons/a/a7/Hr-M.ogg"
+          curl -L -o assets/audio/n.ogg    "https://upload.wikimedia.org/wikipedia/commons/e/e9/Hr-N.ogg"
+          curl -L -o assets/audio/nj.ogg   "https://upload.wikimedia.org/wikipedia/commons/d/d6/Hr-NJ.ogg"
+          curl -L -o assets/audio/o.ogg    "https://upload.wikimedia.org/wikipedia/commons/1/19/Hr-O.ogg"
+          curl -L -o assets/audio/p.ogg    "https://upload.wikimedia.org/wikipedia/commons/6/6f/Hr-P.ogg"
+          curl -L -o assets/audio/r.ogg    "https://upload.wikimedia.org/wikipedia/commons/2/26/Hr-R.ogg"
+          curl -L -o assets/audio/s.ogg    "https://upload.wikimedia.org/wikipedia/commons/c/c3/Hr-S.ogg"
+          curl -L -o assets/audio/sh.ogg   "https://upload.wikimedia.org/wikipedia/commons/3/39/Hr-%C5%A0.ogg"
+          curl -L -o assets/audio/t.ogg    "https://upload.wikimedia.org/wikipedia/commons/0/00/Hr-T.ogg"
+          curl -L -o assets/audio/u.ogg    "https://upload.wikimedia.org/wikipedia/commons/5/54/Hr-U.ogg"
+          curl -L -o assets/audio/v.ogg    "https://upload.wikimedia.org/wikipedia/commons/9/9b/Hr-V.ogg"
+          curl -L -o assets/audio/z.ogg    "https://upload.wikimedia.org/wikipedia/commons/a/a1/Hr-Z.ogg"
+          curl -L -o assets/audio/zh.ogg   "https://upload.wikimedia.org/wikipedia/commons/f/f6/Hr-%C5%BD.ogg"
+          echo "Downloaded $(ls assets/audio/*.ogg | wc -l) audio files"
+
       - name: Install dependencies
         run: flutter pub get
 
