@@ -28,7 +28,6 @@ class _GridScreenState extends State<GridScreen> {
     setState(() => _learnedLetters = learned.toSet());
   }
 
-  // Pastel tile colors
   static const List<Color> _tileColors = [
     Color(0xFFE3F2FD),
     Color(0xFFF3E5F5),
@@ -55,7 +54,7 @@ class _GridScreenState extends State<GridScreen> {
           ),
         ),
         title: Text(
-          'All Letters',
+          'Sva slova / All Letters',
           style: GoogleFonts.poppins(
             fontWeight: FontWeight.w700,
             color: Colors.white,
@@ -67,11 +66,11 @@ class _GridScreenState extends State<GridScreen> {
             padding: const EdgeInsets.only(right: 16),
             child: Center(
               child: Text(
-                '${_learnedLetters.length}/${croatianAlphabet.length}',
+                '${_learnedLetters.length}/${croatianAlphabet.length} naučeno',
                 style: GoogleFonts.poppins(
                   color: Colors.greenAccent.shade200,
                   fontWeight: FontWeight.w600,
-                  fontSize: 15,
+                  fontSize: 13,
                 ),
               ),
             ),
@@ -85,14 +84,13 @@ class _GridScreenState extends State<GridScreen> {
             crossAxisCount: 4,
             mainAxisSpacing: 12,
             crossAxisSpacing: 12,
-            childAspectRatio: 0.9,
+            childAspectRatio: 0.85,
           ),
           itemCount: croatianAlphabet.length,
           itemBuilder: (context, index) {
             final letter = croatianAlphabet[index];
             final isLearned = _learnedLetters.contains(letter.upper);
-            final tileColor =
-                _tileColors[index % _tileColors.length];
+            final tileColor = _tileColors[index % _tileColors.length];
 
             return GestureDetector(
               onTap: () async {
@@ -133,20 +131,26 @@ class _GridScreenState extends State<GridScreen> {
                         mainAxisAlignment: MainAxisAlignment.center,
                         children: [
                           Text(
+                            letter.emoji,
+                            style: const TextStyle(fontSize: 22),
+                          ),
+                          Text(
                             letter.upper,
                             style: GoogleFonts.poppins(
-                              fontSize: 28,
+                              fontSize: 26,
                               fontWeight: FontWeight.w700,
                               color: const Color(0xFF1A237E),
                             ),
                           ),
                           Text(
-                            letter.lower,
+                            letter.wordHr,
                             style: GoogleFonts.poppins(
-                              fontSize: 14,
-                              fontWeight: FontWeight.w400,
-                              color: const Color(0xFF3949AB),
+                              fontSize: 9,
+                              fontWeight: FontWeight.w500,
+                              color: Colors.indigo.shade400,
                             ),
+                            textAlign: TextAlign.center,
+                            overflow: TextOverflow.ellipsis,
                           ),
                         ],
                       ),
@@ -171,3 +175,20 @@ class _GridScreenState extends State<GridScreen> {
     );
   }
 }
+```
+
+Click **Commit changes**.
+
+---
+
+## Fix 6 — Add ProGuard rules to fix audio in release mode
+
+1. Click **Add file → Create new file**
+2. Filename: `android/app/proguard-rules.pro`
+3. Paste:
+```
+-keep class xyz.luan.audioplayers.** { *; }
+-keep class xyz.luan.audioplayers.player.** { *; }
+-keep class io.flutter.** { *; }
+-keep class io.flutter.plugins.** { *; }
+-dontwarn xyz.luan.audioplayers.**
