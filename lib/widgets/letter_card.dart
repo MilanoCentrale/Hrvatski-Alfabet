@@ -104,7 +104,7 @@ class _LetterCardState extends State<LetterCard>
   Widget build(BuildContext context) {
     final screenHeight = MediaQuery.of(context).size.height;
     final imageHeight = screenHeight * 0.38;
-    final letterSpacing = screenHeight * 0.04;
+    final letterSpacing = screenHeight * 0.00;
 
     return Card(
       elevation: 8,
@@ -164,7 +164,7 @@ class _LetterCardState extends State<LetterCard>
                 ),
               ),
 
-              const SizedBox(height: 12),
+              const SizedBox(height: 6),
 
               // Large image (3x original size)
               ClipRRect(
@@ -205,7 +205,7 @@ class _LetterCardState extends State<LetterCard>
                 ),
               ),
 
-              const SizedBox(height: 10),
+              const SizedBox(height: 4),
 
               // Word label
               Text(
@@ -242,7 +242,7 @@ class _LetterCardState extends State<LetterCard>
                 ),
               ),
 
-              const SizedBox(height: 16),
+              const SizedBox(height: 8),
 
               // IPA reveal (animated)
               AnimatedBuilder(
@@ -273,7 +273,7 @@ class _LetterCardState extends State<LetterCard>
                 },
               ),
 
-              const SizedBox(height: 16),
+              const SizedBox(height: 8),
 
               // Action buttons
               Row(
