@@ -1,5 +1,3 @@
-// lib/data/croatian_alphabet.dart
-
 class LetterData {
   final String upper;
   final String lower;
