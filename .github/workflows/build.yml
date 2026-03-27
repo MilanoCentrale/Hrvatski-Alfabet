@@ -28,80 +28,11 @@ jobs:
           flutter-version: '3.22.0'
           channel: 'stable'
 
-      - name: Install ffmpeg
-        run: sudo apt-get install -y ffmpeg
-
-      - name: Download and convert Croatian alphabet audio files
+      - name: Verify audio files
         run: |
-          mkdir -p assets/audio
-
-          download_and_convert() {
-            local key="$1"
-            local url="$2"
-            local ogg="assets/audio/${key}.ogg"
-            local mp3="assets/audio/${key}.mp3"
-
-            echo "--- Downloading $key ---"
-            curl -L -A "Mozilla/5.0 (X11; Linux x86_64)" \
-                 --max-time 30 \
-                 --retry 3 \
-                 --retry-delay 2 \
-                 -o "$ogg" "$url" 2>&1
-
-            local size=$(stat -c%s "$ogg" 2>/dev/null || echo 0)
-            echo "Downloaded $key: ${size} bytes"
-
-            if [ "$size" -lt 1000 ]; then
-              echo "WARNING: $key download too small (${size} bytes), skipping"
-              rm -f "$ogg"
-              # Create a silent 1-second MP3 as fallback
-              ffmpeg -f lavfi -i anullsrc=r=44100:cl=mono -t 1 -q:a 9 "$mp3" -y 2>/dev/null
-              return
-            fi
-
-            echo "Converting $key to mp3..."
-            if ffmpeg -i "$ogg" -acodec libmp3lame -q:a 4 "$mp3" -y 2>&1; then
-              echo "OK: $key converted"
-            else
-              echo "WARNING: $key conversion failed, creating silent fallback"
-              ffmpeg -f lavfi -i anullsrc=r=44100:cl=mono -t 1 -q:a 9 "$mp3" -y 2>/dev/null
-            fi
-            rm -f "$ogg"
-          }
-
-          download_and_convert a   "https://upload.wikimedia.org/wikipedia/commons/2/21/Hr-A.ogg"
-          download_and_convert b   "https://upload.wikimedia.org/wikipedia/commons/5/5e/Hr-B.ogg"
-          download_and_convert c   "https://upload.wikimedia.org/wikipedia/commons/6/61/Hr-C.ogg"
-          download_and_convert ch  "https://upload.wikimedia.org/wikipedia/commons/d/d0/Hr-%C4%8C.ogg"
-          download_and_convert cy  "https://upload.wikimedia.org/wikipedia/commons/3/38/Hr-%C4%86.ogg"
-          download_and_convert d   "https://upload.wikimedia.org/wikipedia/commons/4/44/Hr-D.ogg"
-          download_and_convert dz  "https://upload.wikimedia.org/wikipedia/commons/5/5f/Hr-D%C5%BE.ogg"
-          download_and_convert dj  "https://upload.wikimedia.org/wikipedia/commons/2/24/Hr-%C4%90.ogg"
-          download_and_convert e   "https://upload.wikimedia.org/wikipedia/commons/9/9f/Hr-E.ogg"
-          download_and_convert f   "https://upload.wikimedia.org/wikipedia/commons/7/70/Hr-F.ogg"
-          download_and_convert g   "https://upload.wikimedia.org/wikipedia/commons/5/5c/Hr-G.ogg"
-          download_and_convert h   "https://upload.wikimedia.org/wikipedia/commons/f/fc/Hr-H.ogg"
-          download_and_convert i   "https://upload.wikimedia.org/wikipedia/commons/b/b9/Hr-I.ogg"
-          download_and_convert j   "https://upload.wikimedia.org/wikipedia/commons/e/e6/Hr-J.ogg"
-          download_and_convert k   "https://upload.wikimedia.org/wikipedia/commons/5/58/Hr-K.ogg"
-          download_and_convert l   "https://upload.wikimedia.org/wikipedia/commons/5/50/Hr-L.ogg"
-          download_and_convert lj  "https://upload.wikimedia.org/wikipedia/commons/0/03/Hr-LJ.ogg"
-          download_and_convert m   "https://upload.wikimedia.org/wikipedia/commons/a/a7/Hr-M.ogg"
-          download_and_convert n   "https://upload.wikimedia.org/wikipedia/commons/e/e9/Hr-N.ogg"
-          download_and_convert nj  "https://upload.wikimedia.org/wikipedia/commons/d/d6/Hr-NJ.ogg"
-          download_and_convert o   "https://upload.wikimedia.org/wikipedia/commons/1/19/Hr-O.ogg"
-          download_and_convert p   "https://upload.wikimedia.org/wikipedia/commons/6/6f/Hr-P.ogg"
-          download_and_convert r   "https://upload.wikimedia.org/wikipedia/commons/2/26/Hr-R.ogg"
-          download_and_convert s   "https://upload.wikimedia.org/wikipedia/commons/c/c3/Hr-S.ogg"
-          download_and_convert sh  "https://upload.wikimedia.org/wikipedia/commons/3/39/Hr-%C5%A0.ogg"
-          download_and_convert t   "https://upload.wikimedia.org/wikipedia/commons/0/00/Hr-T.ogg"
-          download_and_convert u   "https://upload.wikimedia.org/wikipedia/commons/5/54/Hr-U.ogg"
-          download_and_convert v   "https://upload.wikimedia.org/wikipedia/commons/9/9b/Hr-V.ogg"
-          download_and_convert z   "https://upload.wikimedia.org/wikipedia/commons/a/a1/Hr-Z.ogg"
-          download_and_convert zh  "https://upload.wikimedia.org/wikipedia/commons/f/f6/Hr-%C5%BD.ogg"
-
-          echo "=== Audio files ready: $(ls assets/audio/*.mp3 | wc -l) / 30 ==="
-          ls -lh assets/audio/
+          echo "Audio files present:"
+          ls -lh assets/audio/*.mp3
+          echo "Total: $(ls assets/audio/*.mp3 | wc -l) files"
 
       - name: Install dependencies
         run: flutter pub get
