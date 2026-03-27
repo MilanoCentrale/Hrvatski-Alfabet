@@ -77,7 +77,7 @@ class _FlashcardScreenState extends State<FlashcardScreen> {
           ),
         ),
         title: Text(
-          'Flashcards',
+          'Karticice / Flashcards',
           style: GoogleFonts.poppins(
             fontWeight: FontWeight.w700,
             color: Colors.white,
@@ -87,7 +87,6 @@ class _FlashcardScreenState extends State<FlashcardScreen> {
       ),
       body: Column(
         children: [
-          // Progress bar
           Container(
             decoration: const BoxDecoration(
               gradient: LinearGradient(
@@ -103,18 +102,18 @@ class _FlashcardScreenState extends State<FlashcardScreen> {
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
                     Text(
-                      '${_currentIndex + 1} / $total',
+                      'Slovo / Letter ${_currentIndex + 1} / $total',
                       style: GoogleFonts.poppins(
                         color: Colors.white,
-                        fontSize: 16,
+                        fontSize: 15,
                         fontWeight: FontWeight.w600,
                       ),
                     ),
                     Text(
-                      '${_learnedLetters.length} learned',
+                      '${_learnedLetters.length} naučeno / learned',
                       style: GoogleFonts.poppins(
                         color: Colors.greenAccent.shade200,
-                        fontSize: 14,
+                        fontSize: 13,
                         fontWeight: FontWeight.w500,
                       ),
                     ),
@@ -134,7 +133,6 @@ class _FlashcardScreenState extends State<FlashcardScreen> {
             ),
           ),
 
-          // Letter cards PageView
           Expanded(
             child: PageView.builder(
               controller: _pageController,
@@ -143,8 +141,8 @@ class _FlashcardScreenState extends State<FlashcardScreen> {
               itemBuilder: (context, index) {
                 final letter = croatianAlphabet[index];
                 return Padding(
-                  padding:
-                      const EdgeInsets.symmetric(horizontal: 20, vertical: 16),
+                  padding: const EdgeInsets.symmetric(
+                      horizontal: 20, vertical: 16),
                   child: LetterCard(
                     letter: letter,
                     isLearned: _learnedLetters.contains(letter.upper),
@@ -155,21 +153,17 @@ class _FlashcardScreenState extends State<FlashcardScreen> {
             ),
           ),
 
-          // Navigation arrows
           Padding(
             padding: const EdgeInsets.fromLTRB(24, 0, 24, 32),
             child: Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
-                // Previous
                 _NavButton(
                   icon: Icons.arrow_back_rounded,
-                  label: 'Prev',
+                  label: 'Preth. / Prev',
                   enabled: _currentIndex > 0,
                   onTap: () => _goTo(_currentIndex - 1),
                 ),
-
-                // Dot indicators (mini)
                 Expanded(
                   child: Center(
                     child: _DotRow(
@@ -178,11 +172,9 @@ class _FlashcardScreenState extends State<FlashcardScreen> {
                     ),
                   ),
                 ),
-
-                // Next
                 _NavButton(
                   icon: Icons.arrow_forward_rounded,
-                  label: 'Next',
+                  label: 'Sljed. / Next',
                   enabled: _currentIndex < total - 1,
                   onTap: () => _goTo(_currentIndex + 1),
                   iconFirst: false,
@@ -213,35 +205,38 @@ class _NavButton extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final color =
-        enabled ? const Color(0xFF1565C0) : Colors.grey.shade300;
-    final content = iconFirst
-        ? [Icon(icon, size: 18), const SizedBox(width: 6), Text(label)]
-        : [Text(label), const SizedBox(width: 6), Icon(icon, size: 18)];
+    final color = enabled ? const Color(0xFF1565C0) : Colors.grey.shade300;
 
     return GestureDetector(
       onTap: enabled ? onTap : null,
       child: Container(
-        padding:
-            const EdgeInsets.symmetric(horizontal: 16, vertical: 10),
+        padding: const EdgeInsets.symmetric(horizontal: 14, vertical: 10),
         decoration: BoxDecoration(
           color: enabled ? color.withOpacity(0.1) : Colors.transparent,
           borderRadius: BorderRadius.circular(14),
           border: Border.all(color: color),
         ),
         child: Row(
-          children: content
-              .map((w) => w is Text
-                  ? Text(
-                      (w).data ?? '',
+          mainAxisSize: MainAxisSize.min,
+          children: iconFirst
+              ? [
+                  Icon(icon, size: 16, color: color),
+                  const SizedBox(width: 4),
+                  Text(label,
                       style: GoogleFonts.poppins(
-                        color: color,
-                        fontWeight: FontWeight.w600,
-                        fontSize: 14,
-                      ),
-                    )
-                  : w)
-              .toList(),
+                          color: color,
+                          fontWeight: FontWeight.w600,
+                          fontSize: 12)),
+                ]
+              : [
+                  Text(label,
+                      style: GoogleFonts.poppins(
+                          color: color,
+                          fontWeight: FontWeight.w600,
+                          fontSize: 12)),
+                  const SizedBox(width: 4),
+                  Icon(icon, size: 16, color: color),
+                ],
         ),
       ),
     );
@@ -256,9 +251,9 @@ class _DotRow extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    // Show at most 7 dots centered around current
     const maxDots = 7;
-    int start = (current - maxDots ~/ 2).clamp(0, (total - maxDots).clamp(0, total));
+    int start =
+        (current - maxDots ~/ 2).clamp(0, (total - maxDots).clamp(0, total));
     int end = (start + maxDots).clamp(0, total);
 
     return Row(
@@ -272,9 +267,7 @@ class _DotRow extends StatelessWidget {
           width: isActive ? 16 : 6,
           height: 6,
           decoration: BoxDecoration(
-            color: isActive
-                ? const Color(0xFF1565C0)
-                : Colors.grey.shade300,
+            color: isActive ? const Color(0xFF1565C0) : Colors.grey.shade300,
             borderRadius: BorderRadius.circular(3),
           ),
         );
