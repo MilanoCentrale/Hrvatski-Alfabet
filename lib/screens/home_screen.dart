@@ -49,8 +49,6 @@ class _HomeScreenState extends State<HomeScreen> {
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 const SizedBox(height: 16),
-
-                // Flag + Title
                 Row(
                   children: [
                     const Text('🇭🇷', style: TextStyle(fontSize: 36)),
@@ -59,21 +57,21 @@ class _HomeScreenState extends State<HomeScreen> {
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
                         Text(
-                          'Croatian',
+                          'Hrvatska abeceda',
                           style: GoogleFonts.poppins(
-                            fontSize: 28,
+                            fontSize: 22,
                             fontWeight: FontWeight.w700,
                             color: Colors.white,
-                            height: 1.1,
+                            height: 1.2,
                           ),
                         ),
                         Text(
-                          'Alphabet',
+                          'Croatian Alphabet',
                           style: GoogleFonts.poppins(
-                            fontSize: 28,
+                            fontSize: 16,
                             fontWeight: FontWeight.w300,
                             color: Colors.white70,
-                            height: 1.1,
+                            height: 1.2,
                           ),
                         ),
                       ],
@@ -83,7 +81,6 @@ class _HomeScreenState extends State<HomeScreen> {
 
                 const SizedBox(height: 32),
 
-                // Progress card
                 Container(
                   width: double.infinity,
                   padding: const EdgeInsets.all(20),
@@ -96,7 +93,7 @@ class _HomeScreenState extends State<HomeScreen> {
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
                       Text(
-                        'Your Progress',
+                        'Napredak / Progress',
                         style: GoogleFonts.poppins(
                           color: Colors.white70,
                           fontSize: 13,
@@ -105,10 +102,10 @@ class _HomeScreenState extends State<HomeScreen> {
                       ),
                       const SizedBox(height: 4),
                       Text(
-                        '$_learnedCount / $_totalCount letters learned',
+                        '$_learnedCount / $_totalCount naučenih slova / letters learned',
                         style: GoogleFonts.poppins(
                           color: Colors.white,
-                          fontSize: 22,
+                          fontSize: 18,
                           fontWeight: FontWeight.w700,
                         ),
                       ),
@@ -128,7 +125,6 @@ class _HomeScreenState extends State<HomeScreen> {
 
                 const SizedBox(height: 32),
 
-                // Start Learning button
                 SizedBox(
                   width: double.infinity,
                   height: 60,
@@ -142,9 +138,9 @@ class _HomeScreenState extends State<HomeScreen> {
                     ),
                     icon: const Icon(Icons.school_rounded, size: 24),
                     label: Text(
-                      'Start Learning',
+                      'Počni učiti / Start Learning',
                       style: GoogleFonts.poppins(
-                        fontSize: 18,
+                        fontSize: 16,
                         fontWeight: FontWeight.w700,
                       ),
                     ),
@@ -165,7 +161,6 @@ class _HomeScreenState extends State<HomeScreen> {
 
                 const SizedBox(height: 16),
 
-                // Browse All Letters button
                 SizedBox(
                   width: double.infinity,
                   height: 60,
@@ -178,7 +173,7 @@ class _HomeScreenState extends State<HomeScreen> {
                     ),
                     icon: const Icon(Icons.grid_view_rounded, size: 22),
                     label: Text(
-                      'Browse All Letters',
+                      'Sva slova / All Letters',
                       style: GoogleFonts.poppins(
                         fontSize: 16,
                         fontWeight: FontWeight.w600,
@@ -200,14 +195,14 @@ class _HomeScreenState extends State<HomeScreen> {
 
                 const Spacer(),
 
-                // Footer
                 Center(
                   child: Text(
-                    '30 letters • Audio • IPA pronunciation',
+                    '30 slova / letters • Zvuk / Audio • IPA izgovor / pronunciation',
                     style: GoogleFonts.poppins(
                       color: Colors.white54,
-                      fontSize: 13,
+                      fontSize: 12,
                     ),
+                    textAlign: TextAlign.center,
                   ),
                 ),
                 const SizedBox(height: 8),
